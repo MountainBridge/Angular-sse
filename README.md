@@ -26,7 +26,7 @@ The important engineering question is not simply “how do I use SSE?” It is:
 
 ## Current implementation
 
-The original application uses Angular CLI 10.0.2, Angular 10.x, TypeScript 3.9.x and RxJS 6.5.x. The original README also documents that the client handles the default SSE `message` event type. fileciteturn188file0
+The original application uses Angular CLI 10.0.2, Angular 10.x, TypeScript 3.9.x and RxJS 6.5.x. The original README also documents that the client handles the default SSE `message` event type.
 
 The repository is intentionally being modernized incrementally rather than pretending the historical implementation was built with today's stack.
 
