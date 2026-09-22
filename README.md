@@ -1,34 +1,27 @@
 # Angular SSE — Real-Time Streaming Lab
 
-This repository started as an Angular Server-Sent Events experiment. It is now being treated as an implementation lab for **real-time delivery, streaming failure modes and browser-based execution**.
+> **Real-time delivery · failure-first engineering · browser streaming**
 
-## What is being explored
+This repository is an implementation lab for understanding **Server-Sent Events (SSE)** as a production boundary—not just learning the API.
 
-```text
-Producer / backend
-       |
-       | event stream
-       v
-Server-Sent Events
-       |
-       v
-Angular client
-       |
-       +--> render
-       +--> reconnect
-       +--> recover
-       +--> observe stale / duplicate / missing events
-```
+![MountainBridge engineering map](https://raw.githubusercontent.com/MountainBridge/MountainBridges/main/assets/mountainbridge-engineering-map.svg)
 
-The important engineering question is not simply “how do I use SSE?” It is:
+## The engineering question
 
 > When is a streaming channel the right boundary, and what must the client and server do when the connection is unreliable?
 
-## Current implementation
+## Architecture
 
-The original application uses Angular CLI 10.0.2, Angular 10.x, TypeScript 3.9.x and RxJS 6.5.x. The original README also documents that the client handles the default SSE `message` event type.
-
-The repository is intentionally being modernized incrementally rather than pretending the historical implementation was built with today's stack.
+```mermaid
+flowchart LR
+    K[Kafka / Event Source] --> P[Consumer / Stream Processor]
+    P --> S[SSE Endpoint]
+    S --> A[Angular Client]
+    A --> R[Render]
+    A --> C[Reconnect]
+    A --> O[Observe]
+    A --> X[Recover]
+```
 
 ## Failure-first exercises
 
@@ -43,6 +36,10 @@ The repository is intentionally being modernized incrementally rather than prete
 - backpressure expectations
 - observability around connection and event state
 
+## Current implementation
+
+The original application uses Angular CLI 10.0.2, Angular 10.x, TypeScript 3.9.x and RxJS 6.5.x. It is being modernized incrementally rather than presented as a current-stack application.
+
 ## Run locally
 
 ```bash
@@ -52,36 +49,19 @@ npm start
 
 Then open `http://localhost:4200/`.
 
-## Run in the browser
-
-For a real multi-file Angular project, use a browser development environment rather than a single-file compiler:
-
-- [GitHub Codespaces](https://github.com/features/codespaces) — full browser IDE, terminal and application runtime
-- [OneCompiler](https://onecompiler.com/) — useful for isolated JavaScript/TypeScript/SQL exercises
-- [JDoodle](https://www.jdoodle.com/online-compiler) — useful for isolated language/compiler exercises
-
-Generic online compilers are useful for interview-style snippets, but the full Angular/SSE application needs a real project runtime.
-
-## Next extension: Kafka
-
-This repository is also the starting point for connecting **browser streaming to event streaming**:
+## Kafka extension
 
 ```text
 Kafka topic
-    |
-    v
+    ↓
 consumer / stream processor
-    |
-    v
+    ↓
 SSE endpoint
-    |
-    v
+    ↓
 Angular client
 ```
 
-The Kafka implementation itself lives in the Data Platform Lab in `MountainBridges` until the dedicated `MountainBridge` coding-lab repository is available.
-
-Related lab: `MountainBridges/projects/data-platform-lab/kafka/`.
+The dedicated event-platform lab is **[KafkaEventPlatform](https://github.com/MountainBridge/KafkaEventPlatform)**.
 
 ## Interview questions
 
@@ -95,6 +75,6 @@ Related lab: `MountainBridges/projects/data-platform-lab/kafka/`.
 
 ## Evidence standard
 
-Every new experiment should record:
+Every new experiment records:
 
 **scenario → implementation → test data → failure injected → observed behaviour → measurement → decision → trade-off**
